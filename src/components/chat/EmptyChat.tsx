@@ -1,10 +1,10 @@
-import { MessageCircle } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const EmptyChat = () => (
   <div className="flex-1 hidden md:flex flex-col items-center justify-center bg-chat-bg">
     <div className="flex flex-col items-center gap-4 text-center">
       <div className="h-20 w-20 rounded-full bg-primary/10 flex items-center justify-center">
-        <MessageCircle className="h-10 w-10 text-primary" />
+        <Logo className="h-10 w-10" />
       </div>
       <div>
         <h2 className="text-xl font-semibold text-foreground">PingMe Web</h2>

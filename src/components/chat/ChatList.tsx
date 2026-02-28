@@ -1,20 +1,21 @@
 import { Chat, User } from "@/types/chat";
-import { users } from "@/data/mockData";
 import AvatarCircle from "./AvatarCircle";
 import { formatChatTime } from "@/lib/chatUtils";
 import { Pin } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ChatListProps {
-  chats: Chat[];
+  chats: (Chat & { participantProfiles: User[] })[];
   activeChatId: string | null;
   onSelectChat: (chatId: string) => void;
   searchQuery: string;
 }
 
-const getOtherUser = (chat: Chat): User =>
-  users.find((u) => chat.participants.includes(u.id) && u.id !== "me") || users[0];
-
 const ChatList = ({ chats, activeChatId, onSelectChat, searchQuery }: ChatListProps) => {
+  const { user: authUser } = useAuth();
+
+  const getOtherUser = (chat: Chat & { participantProfiles: User[] }): User =>
+    chat.participantProfiles.find((u) => u.id !== authUser?.id) || chat.participantProfiles[0];
   const filtered = chats.filter((chat) => {
     const user = getOtherUser(chat);
     return user.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -29,9 +30,8 @@ const ChatList = ({ chats, activeChatId, onSelectChat, searchQuery }: ChatListPr
           <button
             key={chat.id}
             onClick={() => onSelectChat(chat.id)}
-            className={`w-full flex items-center gap-3 px-4 py-3 transition-colors text-left ${
-              isActive ? "bg-primary/10" : "hover:bg-muted/50"
-            }`}
+            className={`w-full flex items-center gap-3 px-4 py-3 transition-colors text-left ${isActive ? "bg-primary/10" : "hover:bg-muted/50"
+              }`}
           >
             <AvatarCircle name={user.name} isOnline={user.isOnline} />
             <div className="flex-1 min-w-0">

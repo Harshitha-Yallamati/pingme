@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { MessageCircle, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +30,7 @@ const Login = () => {
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
           <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-            <MessageCircle className="h-7 w-7 text-primary" />
+            <Logo className="h-7 w-7" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
           <p className="text-sm text-muted-foreground mt-1">Log in to PingMe</p>

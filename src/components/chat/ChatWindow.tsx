@@ -1,11 +1,20 @@
 import { useRef, useEffect, useState } from "react";
-import { Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
+import { Phone, Video, MoreVertical, ArrowLeft, User as UserIcon, Eraser, Trash2 } from "lucide-react";
 import { User, Message } from "@/types/chat";
 import AvatarCircle from "./AvatarCircle";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
 import TypingIndicator from "./TypingIndicator";
 import { formatLastSeen } from "@/lib/chatUtils";
+
+import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ChatWindowProps {
   user: User;
@@ -15,6 +24,7 @@ interface ChatWindowProps {
 }
 
 const ChatWindow = ({ user, messages, onSendMessage, onBack }: ChatWindowProps) => {
+  const { user: authUser } = useAuth();
   const bottomRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -56,16 +66,35 @@ const ChatWindow = ({ user, messages, onSendMessage, onBack }: ChatWindowProps) 
           <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
             <Phone className="h-5 w-5" />
           </button>
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
-            <MoreVertical className="h-5 w-5" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted focus:outline-none">
+                <MoreVertical className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem className="cursor-pointer">
+                <UserIcon className="mr-2 h-4 w-4" />
+                <span>Contact Info</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Eraser className="mr-2 h-4 w-4" />
+                <span>Clear Messages</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+                <Trash2 className="mr-2 h-4 w-4" />
+                <span>Delete Chat</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto scrollbar-thin py-4 space-y-2">
         {messages.map((msg) => (
-          <MessageBubble key={msg.id} message={msg} isMine={msg.senderId === "me"} />
+          <MessageBubble key={msg.id} message={msg} isMine={msg.senderId === authUser?.id} />
         ))}
         {isTyping && <TypingIndicator />}
         <div ref={bottomRef} />

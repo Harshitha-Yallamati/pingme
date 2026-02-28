@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { MessageCircle, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
+import Logo from "@/components/Logo";
 
 const Signup = () => {
   const [displayName, setDisplayName] = useState("");
@@ -11,6 +12,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -34,7 +36,24 @@ const Signup = () => {
       toast.error(error.message);
     } else {
       toast.success("Check your email to confirm your account!");
-      navigate("/login");
+    }
+  };
+
+  const handleResendEmail = async () => {
+    if (!email.trim()) {
+      toast.error("Please enter your email first");
+      return;
+    }
+    setResending(true);
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: email.trim(),
+    });
+    setResending(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Verification email resent!");
     }
   };
 
@@ -43,7 +62,7 @@ const Signup = () => {
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
           <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4">
-            <MessageCircle className="h-7 w-7 text-primary" />
+            <Logo className="h-7 w-7" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Create your account</h1>
           <p className="text-sm text-muted-foreground mt-1">Join PingMe today</p>
@@ -114,6 +133,16 @@ const Signup = () => {
             {loading ? "Creating account..." : "Sign up"}
           </button>
         </form>
+
+        <div className="mt-4">
+          <button
+            onClick={handleResendEmail}
+            disabled={resending}
+            className="w-full bg-secondary text-secondary-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity disabled:opacity-50 text-sm"
+          >
+            {resending ? "Resending..." : "Resend Verification Email"}
+          </button>
+        </div>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
           Already have an account?{" "}
