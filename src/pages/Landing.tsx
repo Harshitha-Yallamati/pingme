@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Shield, Zap, Lock, ArrowRight, Sun, Moon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/hooks/useTheme";
 import Logo from "@/components/Logo";
 
 const Landing = () => {
   const { session } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -15,8 +16,10 @@ const Landing = () => {
     }
   }, [session, navigate]);
 
+  const isDark = theme === "dark";
+
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? "dark bg-slate-900" : "bg-slate-50"}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDark ? "dark bg-slate-950" : "bg-white"}`}>
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,10 +32,10 @@ const Landing = () => {
             </div>
             <div className="flex items-center gap-4">
               <button
-                onClick={() => setIsDarkMode(!isDarkMode)}
-                className="p-2 rounded-full hover:bg-muted transition-colors"
+                onClick={toggleTheme}
+                className="p-2 rounded-full hover:bg-muted transition-colors text-foreground"
               >
-                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
               <Link to="/login" className="text-sm font-medium hover:text-primary transition-colors">
                 Log in
@@ -55,13 +58,13 @@ const Landing = () => {
             <Logo className="h-4 w-4" />
             <span>Secure. Private. Fast.</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 text-slate-900 dark:text-white">
             Connect with anyone,{" "}
             <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent italic">
               anywhere.
             </span>
           </h1>
-          <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-700 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
             Experience the next generation of messaging. Secure, beautiful, and blazing fast.
             Join thousands of users communicating without boundaries.
           </p>
@@ -72,7 +75,7 @@ const Landing = () => {
             >
               Get Started <ArrowRight className="h-4 w-4" />
             </Link>
-            <button className="w-full sm:w-auto h-12 px-8 rounded-xl font-semibold border hover:bg-muted transition-colors">
+            <button className="w-full sm:w-auto h-12 px-8 rounded-xl font-semibold border text-slate-900 dark:text-white hover:bg-muted transition-colors">
               How it works
             </button>
           </div>
