@@ -6,8 +6,9 @@ import { useEffect } from "react";
 
 export const useChats = () => {
     const { user } = useAuth();
+    const queryClient = useQueryClient();
 
-    return useQuery({
+    const query = useQuery({
         queryKey: ["chats", user?.id],
         queryFn: async () => {
             if (!user) return [];
@@ -130,6 +131,41 @@ export const useChats = () => {
         },
         enabled: !!user,
     });
+
+    useEffect(() => {
+        if (!user) return;
+
+        const channel = supabase
+            .channel('public:messages')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'messages' },
+                (payload) => {
+                    // Update chat list if there are new messages or status changes
+                    queryClient.invalidateQueries({ queryKey: ["chats", user.id] });
+                }
+            )
+            .subscribe();
+
+        const profileChannel = supabase
+            .channel('public:profiles')
+            .on(
+                'postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'profiles' },
+                (payload) => {
+                    // Update chat list to refresh presence (is_online, last_seen)
+                    queryClient.invalidateQueries({ queryKey: ["chats", user.id] });
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+            supabase.removeChannel(profileChannel);
+        };
+    }, [user, queryClient]);
+
+    return query;
 };
 
 export const useMessages = (chatId: string | null) => {
@@ -167,26 +203,38 @@ export const useMessages = (chatId: string | null) => {
             .on(
                 "postgres_changes",
                 {
-                    event: "INSERT",
+                    event: "*", // Listen to INSERT, UPDATE, DELETE
                     schema: "public",
                     table: "messages",
                     filter: `chat_id=eq.${chatId}`,
                 },
                 (payload) => {
-                    const msg = payload.new as any;
-                    const newMessage: Message = {
-                        id: msg.id,
-                        chatId: msg.chat_id,
-                        senderId: msg.sender_id,
-                        text: msg.text,
-                        status: msg.status,
-                        timestamp: new Date(msg.timestamp),
-                        edited: msg.edited,
-                    };
-                    queryClient.setQueryData(["messages", chatId], (old: Message[] | undefined) => [
-                        ...(old || []),
-                        newMessage,
-                    ]);
+                    if (payload.eventType === 'INSERT') {
+                        const msg = payload.new as any;
+                        const newMessage: Message = {
+                            id: msg.id,
+                            chatId: msg.chat_id,
+                            senderId: msg.sender_id,
+                            text: msg.text,
+                            status: msg.status,
+                            timestamp: new Date(msg.timestamp),
+                            edited: msg.edited,
+                        };
+                        queryClient.setQueryData(["messages", chatId], (old: Message[] | undefined) => {
+                            // Check if message already exists (e.g. optimistic update)
+                            if (old?.some(m => m.id === msg.id)) return old;
+                            return [...(old || []), newMessage];
+                        });
+                        // Invalidate chats to update last message and unread count
+                        queryClient.invalidateQueries({ queryKey: ["chats"] });
+                    } else if (payload.eventType === 'UPDATE') {
+                        const msg = payload.new as any;
+                        queryClient.setQueryData(["messages", chatId], (old: Message[] | undefined) => {
+                            if (!old) return old;
+                            return old.map(m => m.id === msg.id ? { ...m, status: msg.status, text: msg.text, edited: msg.edited } : m);
+                        });
+                        queryClient.invalidateQueries({ queryKey: ["chats"] });
+                    }
                 }
             )
             .subscribe();
