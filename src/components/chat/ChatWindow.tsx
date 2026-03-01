@@ -7,6 +7,7 @@ import ChatInput from "./ChatInput";
 import TypingIndicator from "./TypingIndicator";
 import { formatLastSeen } from "@/lib/chatUtils";
 import { useWebRTC } from "@/hooks/useWebRTC";
+import { useTypingStatus } from "@/hooks/useTypingStatus";
 import CallModal from "./CallModal";
 
 import { useAuth } from "@/hooks/useAuth";
@@ -31,7 +32,8 @@ const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindo
   const { user: authUser } = useAuth();
   const markAsRead = useMarkMessagesAsRead();
   const bottomRef = useRef<HTMLDivElement>(null);
-  const [isTyping, setIsTyping] = useState(false);
+
+  const { isTyping, emitTyping } = useTypingStatus(chatId);
 
   // WebRTC Call State
   const {
@@ -65,9 +67,6 @@ const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindo
 
   const handleSend = (text: string) => {
     onSendMessage(text);
-    // Simulate typing response
-    setIsTyping(true);
-    setTimeout(() => setIsTyping(false), 2000 + Math.random() * 2000);
   };
 
   return (
@@ -137,7 +136,7 @@ const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindo
         <div ref={bottomRef} />
       </div>
 
-      <ChatInput onSend={handleSend} />
+      <ChatInput onSend={handleSend} onTyping={emitTyping} />
 
       {/* Call UI Overlay */}
       <CallModal
