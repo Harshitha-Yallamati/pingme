@@ -120,6 +120,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => { mounted = false; };
   }, [user]);
 
+  // Presence Tracking Effect
+  useEffect(() => {
+    if (!user) return;
+
+    const updatePresence = async (status: boolean) => {
+      try {
+        await supabase.rpc('update_user_presence', { online_status: status });
+      } catch (err) {
+        console.error("[Presence] Error updating presence:", err);
+      }
+    };
+
+    // Initial online
+    updatePresence(true);
+
+    // Heartbeat every 2 minutes
+    const interval = setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        updatePresence(true);
+      }
+    }, 120000);
+
+    // Visibility change handler
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        updatePresence(true);
+      } else {
+        // We can stay "online" for a bit or set to false immediately. 
+        // Let's set to true only when visible to keep "last_seen" accurate.
+      }
+    };
+
+    window.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', () => updatePresence(false));
+
+    return () => {
+      updatePresence(false);
+      clearInterval(interval);
+      window.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [user]);
+
   const refreshProfile = async () => {
     if (!user) return;
     setLoadingProfile(true);
@@ -142,6 +184,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setSigningOut(true);
     setLoading(true);
     try {
+      // Set offline before signing out
+      if (user) {
+        await supabase.rpc('update_user_presence', { online_status: false });
+      }
       await supabase.auth.signOut();
     } finally {
       setUser(null);

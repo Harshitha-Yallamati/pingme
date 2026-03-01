@@ -8,6 +8,7 @@ import TypingIndicator from "./TypingIndicator";
 import { formatLastSeen } from "@/lib/chatUtils";
 
 import { useAuth } from "@/hooks/useAuth";
+import { useMarkMessagesAsRead } from "@/hooks/useChat";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,16 +18,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 interface ChatWindowProps {
+  chatId: string; // Add chatId to props
   user: User;
   messages: Message[];
   onSendMessage: (text: string) => void;
   onBack: () => void;
 }
 
-const ChatWindow = ({ user, messages, onSendMessage, onBack }: ChatWindowProps) => {
+const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindowProps) => {
   const { user: authUser } = useAuth();
+  const markAsRead = useMarkMessagesAsRead();
   const bottomRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
+
+  // Mark messages as read when they appear
+  useEffect(() => {
+    const unreadFromOther = messages.some(
+      (msg) => msg.senderId !== authUser?.id && msg.status !== "read"
+    );
+    if (unreadFromOther && chatId) {
+      markAsRead.mutate(chatId);
+    }
+  }, [messages, chatId, authUser?.id]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -47,12 +60,12 @@ const ChatWindow = ({ user, messages, onSendMessage, onBack }: ChatWindowProps) 
           <button onClick={onBack} className="md:hidden p-1 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <AvatarCircle name={user.name} isOnline={user.isOnline} size="sm" />
+          <AvatarCircle name={user.name} avatarUrl={user.avatar} isOnline={user.isOnline} size="sm" />
           <div>
             <h2 className="font-semibold text-sm text-foreground">{user.name}</h2>
             <p className="text-[11px] text-muted-foreground">
               {user.isOnline ? (
-                <span className="text-online">online</span>
+                <span className="text-online font-medium">Active now</span>
               ) : (
                 `last seen ${formatLastSeen(user.lastSeen)}`
               )}

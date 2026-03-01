@@ -32,14 +32,25 @@ const ChatInput = ({ onSend, onTyping }: ChatInputProps) => {
 
   return (
     <div className="bg-chat-input-bg border-t border-border px-4 py-3">
-      <div className="flex items-end gap-2">
-        <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
+      <div
+        className="flex items-end gap-2"
+        onClick={() => inputRef.current?.focus()}
+      >
+        <button
+          type="button"
+          onClick={(e) => e.stopPropagation()}
+          className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
+        >
           <Smile className="h-5 w-5" />
         </button>
-        <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
+        <button
+          type="button"
+          onClick={(e) => e.stopPropagation()}
+          className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
+        >
           <Paperclip className="h-5 w-5" />
         </button>
-        <div className="flex-1 bg-muted rounded-2xl px-4 py-2">
+        <div className="flex-1 bg-muted rounded-2xl px-4 py-2.5 cursor-text">
           <textarea
             ref={inputRef}
             value={text}
@@ -50,18 +61,26 @@ const ChatInput = ({ onSend, onTyping }: ChatInputProps) => {
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
             rows={1}
-            className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none resize-none"
+            className="w-full bg-transparent text-base text-foreground placeholder:text-muted-foreground focus:outline-none resize-none leading-tight min-h-[24px]"
           />
         </div>
         {text.trim() ? (
           <button
-            onClick={handleSend}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSend();
+            }}
             className="p-2.5 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
           >
             <Send className="h-5 w-5" />
           </button>
         ) : (
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
+          <button
+            type="button"
+            onClick={(e) => e.stopPropagation()}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
+          >
             <Mic className="h-5 w-5" />
           </button>
         )}

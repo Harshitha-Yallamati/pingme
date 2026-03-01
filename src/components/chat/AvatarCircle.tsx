@@ -2,6 +2,7 @@ import { getInitials } from "@/lib/chatUtils";
 
 interface AvatarCircleProps {
   name: string;
+  avatarUrl?: string;
   isOnline?: boolean;
   size?: "sm" | "md" | "lg";
 }
@@ -29,18 +30,28 @@ const getColor = (name: string) => {
   return colors[Math.abs(hash) % colors.length];
 };
 
-const AvatarCircle = ({ name, isOnline, size = "md" }: AvatarCircleProps) => (
+const AvatarCircle = ({ name, avatarUrl, isOnline, size = "md" }: AvatarCircleProps) => (
   <div className="relative flex-shrink-0">
+    {avatarUrl ? (
+      <img
+        src={avatarUrl}
+        alt={name}
+        className={`${sizeMap[size]} rounded-full object-cover border border-border/50`}
+        onError={(e) => {
+          (e.target as HTMLImageElement).style.display = 'none';
+          (e.target as HTMLImageElement).parentElement?.querySelector('.initials-fallback')?.classList.remove('hidden');
+        }}
+      />
+    ) : null}
     <div
-      className={`${sizeMap[size]} ${getColor(name)} rounded-full flex items-center justify-center font-semibold text-white`}
+      className={`${sizeMap[size]} ${getColor(name)} rounded-full flex items-center justify-center font-semibold text-white initials-fallback ${avatarUrl ? 'hidden' : ''}`}
     >
       {getInitials(name)}
     </div>
     {isOnline !== undefined && (
       <span
-        className={`absolute bottom-0 right-0 ${dotSizeMap[size]} rounded-full border-chat-sidebar ${
-          isOnline ? "bg-online" : "bg-muted-foreground"
-        }`}
+        className={`absolute bottom-0 right-0 ${dotSizeMap[size]} rounded-full border-chat-sidebar ${isOnline ? "bg-online" : "bg-muted-foreground"
+          }`}
       />
     )}
   </div>

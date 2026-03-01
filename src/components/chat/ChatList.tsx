@@ -33,7 +33,7 @@ const ChatList = ({ chats, activeChatId, onSelectChat, searchQuery }: ChatListPr
             className={`w-full flex items-center gap-3 px-4 py-3 transition-colors text-left ${isActive ? "bg-primary/10" : "hover:bg-muted/50"
               }`}
           >
-            <AvatarCircle name={user.name} isOnline={user.isOnline} />
+            <AvatarCircle name={user.name} avatarUrl={user.avatar} isOnline={user.isOnline} />
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-sm text-foreground truncate">{user.name}</span>

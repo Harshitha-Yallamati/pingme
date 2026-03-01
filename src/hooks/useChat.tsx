@@ -71,7 +71,9 @@ export const useChats = () => {
             const endTime = performance.now();
             console.log(`[Chat] Chats fetched in ${(endTime - startTime).toFixed(2)}ms, found ${data.length} chats.`);
 
-            return data.map((item: any) => {
+            // Fetch unread counts separately or via a more complex query? 
+            // Let's do a quick count for each chat.
+            const chatsData = data.map((item: any) => {
                 const chat = item.chats;
                 const chatParticipants = chat.participants.map((p: any) => {
                     const profile = p.profiles;
@@ -89,7 +91,7 @@ export const useChats = () => {
                 return {
                     id: item.chat_id,
                     participants: chatParticipants.map((p: any) => p.id),
-                    participantProfiles: chatParticipants, // Store actual profiles for UI convenience
+                    participantProfiles: chatParticipants,
                     lastMessage: chat.messages ? {
                         id: chat.messages.id,
                         chatId: item.chat_id,
@@ -98,9 +100,22 @@ export const useChats = () => {
                         timestamp: new Date(chat.messages.timestamp),
                         status: chat.messages.status,
                     } : undefined,
-                    unreadCount: 0,
                 };
-            }) as (Chat & { participantProfiles: any[] })[];
+            });
+
+            // Parallel fetch unread counts for all chats
+            const enrichedChats = await Promise.all(chatsData.map(async (chat) => {
+                const { count } = await supabase
+                    .from("messages")
+                    .select("*", { count: 'exact', head: true })
+                    .eq("chat_id", chat.id)
+                    .neq("sender_id", user.id)
+                    .neq("status", "read");
+
+                return { ...chat, unreadCount: count || 0 };
+            }));
+
+            return enrichedChats as (Chat & { participantProfiles: any[] })[];
         },
         enabled: !!user,
     });
@@ -121,8 +136,13 @@ export const useMessages = (chatId: string | null) => {
 
             if (error) throw error;
             return data.map((m: any) => ({
-                ...m,
+                id: m.id,
+                chatId: m.chat_id,
+                senderId: m.sender_id,
+                text: m.text,
+                status: m.status,
                 timestamp: new Date(m.timestamp),
+                edited: m.edited,
             })) as Message[];
         },
         enabled: !!chatId,
@@ -142,10 +162,19 @@ export const useMessages = (chatId: string | null) => {
                     filter: `chat_id=eq.${chatId}`,
                 },
                 (payload) => {
-                    const newMessage = payload.new as any;
+                    const msg = payload.new as any;
+                    const newMessage: Message = {
+                        id: msg.id,
+                        chatId: msg.chat_id,
+                        senderId: msg.sender_id,
+                        text: msg.text,
+                        status: msg.status,
+                        timestamp: new Date(msg.timestamp),
+                        edited: msg.edited,
+                    };
                     queryClient.setQueryData(["messages", chatId], (old: Message[] | undefined) => [
                         ...(old || []),
-                        { ...newMessage, timestamp: new Date(newMessage.timestamp) } as Message,
+                        newMessage,
                     ]);
                 }
             )
@@ -192,6 +221,7 @@ export const useSendMessage = () => {
         },
         onSuccess: (data, variables) => {
             queryClient.invalidateQueries({ queryKey: ["chats"] });
+            queryClient.invalidateQueries({ queryKey: ["messages", variables.chatId] });
             // Message will be added to list by real-time subscription
         },
     });
@@ -251,6 +281,31 @@ export const useCreateChat = () => {
             return { id: chat.id, isExisting: false };
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["chats"] });
+        },
+    });
+};
+export const useMarkMessagesAsRead = () => {
+    const { user } = useAuth();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (chatId: string) => {
+            if (!user) throw new Error("Not authenticated");
+
+            console.log(`[Chat] Marking messages as read for chat ${chatId}`);
+
+            const { error } = await supabase
+                .from("messages")
+                .update({ status: "read" })
+                .eq("chat_id", chatId)
+                .neq("sender_id", user.id)
+                .neq("status", "read");
+
+            if (error) throw error;
+        },
+        onSuccess: (data, chatId) => {
+            queryClient.invalidateQueries({ queryKey: ["messages", chatId] });
             queryClient.invalidateQueries({ queryKey: ["chats"] });
         },
     });

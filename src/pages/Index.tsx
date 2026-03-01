@@ -50,16 +50,19 @@ const Index = () => {
       </div>
 
       {/* Chat window or empty state */}
-      {activeChatId && otherUser ? (
-        <ChatWindow
-          user={otherUser}
-          messages={messages}
-          onSendMessage={handleSendMessage}
-          onBack={() => setActiveChatId(null)}
-        />
-      ) : (
-        <EmptyChat />
-      )}
+      <div className={`${activeChatId ? "flex" : "hidden md:flex"} flex-1 h-full`}>
+        {activeChatId && otherUser ? (
+          <ChatWindow
+            chatId={activeChatId}
+            user={otherUser}
+            messages={messages}
+            onSendMessage={handleSendMessage}
+            onBack={() => setActiveChatId(null)}
+          />
+        ) : (
+          <EmptyChat />
+        )}
+      </div>
     </div>
   );
 };
