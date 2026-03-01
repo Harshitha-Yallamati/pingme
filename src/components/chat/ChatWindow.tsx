@@ -6,6 +6,8 @@ import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
 import TypingIndicator from "./TypingIndicator";
 import { formatLastSeen } from "@/lib/chatUtils";
+import { useWebRTC } from "@/hooks/useWebRTC";
+import CallModal from "./CallModal";
 
 import { useAuth } from "@/hooks/useAuth";
 import { useMarkMessagesAsRead } from "@/hooks/useChat";
@@ -30,6 +32,22 @@ const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindo
   const markAsRead = useMarkMessagesAsRead();
   const bottomRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
+
+  // WebRTC Call State
+  const {
+    callState,
+    incomingCall,
+    localStream,
+    remoteStream,
+    isVideoEnabled,
+    isAudioEnabled,
+    startCall,
+    acceptCall,
+    declineCall,
+    endCall,
+    toggleVideo,
+    toggleAudio
+  } = useWebRTC({ chatId });
 
   // Mark messages as read when they appear
   useEffect(() => {
@@ -73,10 +91,16 @@ const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindo
           </div>
         </div>
         <div className="flex items-center gap-1">
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
+          <button
+            onClick={() => startCall(true)}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
+          >
             <Video className="h-5 w-5" />
           </button>
-          <button className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted">
+          <button
+            onClick={() => startCall(false)}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
+          >
             <Phone className="h-5 w-5" />
           </button>
           <DropdownMenu>
@@ -114,6 +138,22 @@ const ChatWindow = ({ chatId, user, messages, onSendMessage, onBack }: ChatWindo
       </div>
 
       <ChatInput onSend={handleSend} />
+
+      {/* Call UI Overlay */}
+      <CallModal
+        callState={callState}
+        incomingCall={incomingCall}
+        localStream={localStream}
+        remoteStream={remoteStream}
+        isVideoEnabled={isVideoEnabled}
+        isAudioEnabled={isAudioEnabled}
+        callerProfile={user}
+        onAccept={acceptCall}
+        onDecline={declineCall}
+        onEndCall={endCall}
+        onToggleVideo={toggleVideo}
+        onToggleAudio={toggleAudio}
+      />
     </div>
   );
 };

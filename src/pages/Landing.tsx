@@ -75,7 +75,12 @@ const Landing = () => {
             >
               Get Started <ArrowRight className="h-4 w-4" />
             </Link>
-            <button className="w-full sm:w-auto h-12 px-8 rounded-xl font-semibold border text-slate-900 dark:text-white hover:bg-muted transition-colors">
+            <button
+              onClick={() => {
+                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="w-full sm:w-auto h-12 px-8 rounded-xl font-semibold border text-slate-900 dark:text-white hover:bg-muted transition-colors"
+            >
               How it works
             </button>
           </div>
@@ -83,7 +88,7 @@ const Landing = () => {
       </section>
 
       {/* Features */}
-      <section className="py-20 px-4 bg-muted/30">
+      <section id="how-it-works" className="py-20 px-4 bg-muted/30">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-background p-8 rounded-3xl border shadow-sm hover:shadow-md transition-shadow">
