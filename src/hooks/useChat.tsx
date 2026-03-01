@@ -88,17 +88,21 @@ export const useChats = () => {
                     };
                 });
 
+                const rawMsg = chat.messages;
+                const lastMsg = Array.isArray(rawMsg) ? rawMsg[0] : rawMsg;
+
                 return {
                     id: item.chat_id,
+                    createdAt: chat.created_at, // Include created_at
                     participants: chatParticipants.map((p: any) => p.id),
                     participantProfiles: chatParticipants,
-                    lastMessage: chat.messages ? {
-                        id: chat.messages.id,
+                    lastMessage: lastMsg ? {
+                        id: lastMsg.id,
                         chatId: item.chat_id,
-                        senderId: chat.messages.sender_id,
-                        text: chat.messages.text,
-                        timestamp: new Date(chat.messages.timestamp),
-                        status: chat.messages.status,
+                        senderId: lastMsg.sender_id,
+                        text: lastMsg.text,
+                        timestamp: new Date(lastMsg.timestamp),
+                        status: lastMsg.status,
                     } : undefined,
                 };
             });
@@ -115,7 +119,14 @@ export const useChats = () => {
                 return { ...chat, unreadCount: count || 0 };
             }));
 
-            return enrichedChats as (Chat & { participantProfiles: any[] })[];
+            // Sort by latest message timestamp descending, fallback to chat creation time
+            enrichedChats.sort((a: any, b: any) => {
+                const timeA = a.lastMessage?.timestamp?.getTime() || new Date(a.createdAt).getTime() || 0;
+                const timeB = b.lastMessage?.timestamp?.getTime() || new Date(b.createdAt).getTime() || 0;
+                return timeB - timeA;
+            });
+
+            return enrichedChats as (Chat & { participantProfiles: any[]; createdAt: string })[];
         },
         enabled: !!user,
     });

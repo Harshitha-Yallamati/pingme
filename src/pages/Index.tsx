@@ -43,14 +43,14 @@ const Index = () => {
   }
 
   return (
-    <div className="h-screen w-screen flex overflow-hidden bg-background">
+    <div className="h-[100dvh] w-screen flex overflow-hidden bg-background">
       {/* Sidebar - hidden on mobile when chat is open */}
-      <div className={`${activeChatId ? "hidden md:flex" : "flex"} w-full md:w-auto`}>
+      <div className={`${activeChatId ? "hidden md:flex" : "flex"} w-full md:w-auto h-full`}>
         <Sidebar chats={chats} activeChatId={activeChatId} onSelectChat={handleSelectChat} />
       </div>
 
       {/* Chat window or empty state */}
-      <div className={`${activeChatId ? "flex" : "hidden md:flex"} flex-1 h-full`}>
+      <div className={`${activeChatId ? "flex" : "hidden md:flex"} flex-1 h-full w-full md:w-auto`}>
         {activeChatId && otherUser ? (
           <ChatWindow
             chatId={activeChatId}

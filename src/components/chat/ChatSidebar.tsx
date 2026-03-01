@@ -152,7 +152,7 @@ const Sidebar = ({ chats, activeChatId, onSelectChat }: SidebarProps) => {
       </div>
 
       {/* Main Sidebar Content */}
-      <div className="w-full md:w-[320px] lg:w-[350px] h-full flex flex-col border-r border-border shadow-sm">
+      <div className="flex-1 md:w-[320px] lg:w-[350px] h-full flex flex-col border-r border-border shadow-sm">
         {view === "settings" ? (
           <div className="flex-1 flex flex-col p-6 animate-in fade-in slide-in-from-left-4 duration-300">
             <h2 className="text-2xl font-bold mb-6 text-foreground">Settings</h2>
