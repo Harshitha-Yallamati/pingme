@@ -27,24 +27,8 @@ Supabase (Auth + Database + Realtime)
 Bun / npm
 Git & GitHub
 Vercel (Deployment)
-📂 Project Structure
-pingme/
-│── public/  
-│── src/
-│   ├── components/          # UI components
-│   ├── pages/               # App pages (Login, Signup, Chat, Landing)
-│   ├── hooks/               # Custom hooks
-│   ├── lib/                 # Utility functions
-│   ├── integrations/        # Supabase integration
-│   ├── types/               # TypeScript types
-│   ├── data/                # Static/mock data
-│   ├── test/                # Test files
-│   ├── App.tsx
-│   └── main.tsx
-│
-│── supabase/                # Supabase config
-│── index.html  
-│── package.json  
+
+
 ⚙️ Installation & Setup
 # Clone the repository
 git clone https://github.com/Harshitha-Yallamati/pingme.git
@@ -57,29 +41,13 @@ npm install
 
 # Run the app
 npm run dev
-🔑 Environment Variables
 
-Create a .env file:
-
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_anon_key
 🧠 How It Works
 Users authenticate using Supabase Auth
 Messages are stored in Supabase Database
 Real-time updates are handled using Supabase Realtime subscriptions
 React components update UI instantly on new messages
-📸 Screenshots
-🏠 Landing Page
 
-(Add your screenshot here)
-
-🔐 Authentication
-
-(Add login/signup screenshot)
-
-💬 Chat Interface
-
-(Add chat UI screenshot)
 
 🚀 Future Enhancements
 👥 Group chat functionality
