@@ -1,73 +1,103 @@
-# Welcome to your Lovable project
+📲 PingMe – Real-Time Messaging Platform
+🌐 Live Demo
 
-## Project info
+👉 https://pingme-flame.vercel.app/
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+📌 Overview
 
-## How can I edit this code?
+PingMe is a modern real-time messaging application that enables users to connect instantly with secure and fast communication.
 
-There are several ways of editing your application.
+It features authentication, real-time chat, and a clean UI, built using a scalable frontend architecture and backend powered by Supabase.
 
-**Use Lovable**
+✨ Features
+💬 Real-time chat with instant message delivery
+🔐 Secure authentication (Sign up / Login)
+⚡ Fast and responsive UI
+🟢 Online-like interactive experience
+🔒 End-to-end secure communication (via backend services)
+🎨 Clean modern UI with dark mode support
+🛠️ Tech Stack
+💻 Frontend
+React.js (TypeScript)
+Vite
+Tailwind CSS
+🗄️ Backend / BaaS
+Supabase (Auth + Database + Realtime)
+🧰 Tools
+Bun / npm
+Git & GitHub
+Vercel (Deployment)
+📂 Project Structure
+pingme/
+│── public/  
+│── src/
+│   ├── components/          # UI components
+│   ├── pages/               # App pages (Login, Signup, Chat, Landing)
+│   ├── hooks/               # Custom hooks
+│   ├── lib/                 # Utility functions
+│   ├── integrations/        # Supabase integration
+│   ├── types/               # TypeScript types
+│   ├── data/                # Static/mock data
+│   ├── test/                # Test files
+│   ├── App.tsx
+│   └── main.tsx
+│
+│── supabase/                # Supabase config
+│── index.html  
+│── package.json  
+⚙️ Installation & Setup
+# Clone the repository
+git clone https://github.com/Harshitha-Yallamati/pingme.git
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+# Navigate to project
+cd pingme
 
-Changes made via Lovable will be committed automatically to this repo.
+# Install dependencies
+npm install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Run the app
 npm run dev
-```
+🔑 Environment Variables
 
-**Edit a file directly in GitHub**
+Create a .env file:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_anon_key
+🧠 How It Works
+Users authenticate using Supabase Auth
+Messages are stored in Supabase Database
+Real-time updates are handled using Supabase Realtime subscriptions
+React components update UI instantly on new messages
+📸 Screenshots
+🏠 Landing Page
 
-**Use GitHub Codespaces**
+(Add your screenshot here)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+🔐 Authentication
 
-## What technologies are used for this project?
+(Add login/signup screenshot)
 
-This project is built with:
+💬 Chat Interface
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+(Add chat UI screenshot)
 
-## How can I deploy this project?
+🚀 Future Enhancements
+👥 Group chat functionality
+📎 Media/file sharing
+🔔 Push notifications
+🧠 AI-powered smart replies
+📱 Mobile app version
+🤝 Contributing
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Feel free to fork and contribute to the project.
 
-## Can I connect a custom domain to my Lovable project?
+📄 License
 
-Yes, you can!
+MIT License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+👩‍💻 Author
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Harshitha Yallamati
+
+GitHub: https://github.com/Harshitha-Yallamati
+LinkedIn: https://linkedin.com/in/harshitha-yallamati
