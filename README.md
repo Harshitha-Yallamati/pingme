@@ -1,73 +1,119 @@
-# Welcome to your Lovable project
+# PingMe 💬
 
-## Project info
+A modern, high-performance real-time chat application built with **React**, **Vite**, and **Supabase**. PingMe offers a seamless messaging experience with a focus on speed, security, and a premium user interface.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![PingMe Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
+![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Supabase%20%7C%20Tailwind-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+-   **⚡ Real-time Messaging**: Instant message delivery and updates powered by Supabase Realtime.
+-   **🔐 Secure Authentication**: Robust user sign-up and login system via Supabase Auth.
+-   **📞 Voice/Video Calls**: Integrated call interface for enhanced communication.
+-   **⌨️ Typing Indicators**: Real-time feedback when your friends are typing.
+-   **🟢 Presence Tracking**: See who's online and active in real-time.
+-   **📱 Fully Responsive**: A mobile-first design that looks stunning on every device.
+-   **🎨 Premium UI**: Built with Shadcn UI and Tailwind CSS for a sleek, modern aesthetic.
+-   **🔔 Interactive Notifications**: Real-time toast notifications for new messages and status updates.
+-   **🌗 Dark Mode Support**: Easy on the eyes with native dark mode integration.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Tech Stack
 
-**Use your preferred IDE**
+### Frontend
+- **Framework**: [React 18](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Backend & Infrastructure
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **Realtime**: Supabase Realtime Engine
+- **Auth**: Supabase Auth (JWT based)
+- **Hosting**: Recommended [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 🚀 Getting Started
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), or [Bun](https://bun.sh/)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Harshitha-Yallamati/pingme.git
+   cd pingme
+   ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+2. **Install dependencies**:
+   ```bash
+   npm install
+   # or
+   bun install
+   ```
+
+3. **Set up environment variables**:
+   Create a `.env` file in the root directory and add your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+### Development
+
+Start the development server:
+```bash
 npm run dev
+# or
+bun dev
+```
+The application will be available at `http://localhost:8080`.
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+├── components/     # Reusable UI components (Chat, Layout, UI primitives)
+├── data/           # Static data and constants
+├── hooks/          # Custom React hooks for logic and data fetching
+├── integrations/   # Third-party service integrations (Supabase)
+├── lib/            # Utility functions and third-party configurations
+├── pages/          # Main application views (Landing, Login, Signup, Chat)
+├── types/          # TypeScript interfaces and type definitions
+└── test/           # Test suites and configuration
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🤝 Contributing
 
-**Use GitHub Codespaces**
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 📄 License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Built with ❤️ by [Harshitha Yallamati](https://github.com/Harshitha-Yallamati)

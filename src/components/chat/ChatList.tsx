@@ -48,7 +48,11 @@ const ChatList = ({ chats, activeChatId, onSelectChat, searchQuery }: ChatListPr
                 <p className="text-xs text-muted-foreground truncate max-w-[180px]">
                   {chat.lastMessage?.deleted
                     ? "🚫 This message was deleted"
-                    : chat.lastMessage?.text}
+                    : chat.lastMessage?.text
+                      ? (chat.lastMessage.text.split(" ").length > 5
+                        ? chat.lastMessage.text.split(" ").slice(0, 5).join(" ") + "..."
+                        : chat.lastMessage.text)
+                      : ""}
                 </p>
                 {chat.unreadCount > 0 && (
                   <span className="bg-primary text-primary-foreground text-[10px] font-bold rounded-full h-5 min-w-5 flex items-center justify-center px-1.5">
