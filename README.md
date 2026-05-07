@@ -1,71 +1,119 @@
-📲 PingMe – Real-Time Messaging Platform
-🌐 Live Demo
+# PingMe 💬
 
-👉 https://pingme-flame.vercel.app/
+A modern, high-performance real-time chat application built with **React**, **Vite**, and **Supabase**. PingMe offers a seamless messaging experience with a focus on speed, security, and a premium user interface.
 
-📌 Overview
-
-PingMe is a modern real-time messaging application that enables users to connect instantly with secure and fast communication.
-
-It features authentication, real-time chat, and a clean UI, built using a scalable frontend architecture and backend powered by Supabase.
-
-✨ Features
-💬 Real-time chat with instant message delivery
-🔐 Secure authentication (Sign up / Login)
-⚡ Fast and responsive UI
-🟢 Online-like interactive experience
-🔒 End-to-end secure communication (via backend services)
-🎨 Clean modern UI with dark mode support
-🛠️ Tech Stack
-💻 Frontend
-React.js (TypeScript)
-Vite
-Tailwind CSS
-🗄️ Backend / BaaS
-Supabase (Auth + Database + Realtime)
-🧰 Tools
-Bun / npm
-Git & GitHub
-Vercel (Deployment)
+![PingMe Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
+![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Supabase%20%7C%20Tailwind-blue?style=for-the-badge)
 
 
-⚙️ Installation & Setup
-# Clone the repository
-git clone https://github.com/Harshitha-Yallamati/pingme.git
+---
 
-# Navigate to project
-cd pingme
+## ✨ Features
 
-# Install dependencies
-npm install
+-   **⚡ Real-time Messaging**: Instant message delivery and updates powered by Supabase Realtime.
+-   **🔐 Secure Authentication**: Robust user sign-up and login system via Supabase Auth.
+-   **📞 Voice/Video Calls**: Integrated call interface for enhanced communication.
+-   **⌨️ Typing Indicators**: Real-time feedback when your friends are typing.
+-   **🟢 Presence Tracking**: See who's online and active in real-time.
+-   **📱 Fully Responsive**: A mobile-first design that looks stunning on every device.
+-   **🎨 Premium UI**: Built with Shadcn UI and Tailwind CSS for a sleek, modern aesthetic.
+-   **🔔 Interactive Notifications**: Real-time toast notifications for new messages and status updates.
+-   **🌗 Dark Mode Support**: Easy on the eyes with native dark mode integration.
 
-# Run the app
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework**: [React 18](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **State Management**: [TanStack Query](https://tanstack.com/query/latest)
+- **Forms**: [React Hook Form](https://react-hook-form.com/) & [Zod](https://zod.dev/)
+
+### Backend & Infrastructure
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL)
+- **Realtime**: Supabase Realtime Engine
+- **Auth**: Supabase Auth (JWT based)
+- **Hosting**: Recommended [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), or [Bun](https://bun.sh/)
+
+### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Harshitha-Yallamati/pingme.git
+   cd pingme
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   # or
+   bun install
+   ```
+
+3. **Set up environment variables**:
+   Create a `.env` file in the root directory and add your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_url
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+### Development
+
+Start the development server:
+```bash
 npm run dev
+# or
+bun dev
+```
+The application will be available at `http://localhost:8080`.
 
-🧠 How It Works
-Users authenticate using Supabase Auth
-Messages are stored in Supabase Database
-Real-time updates are handled using Supabase Realtime subscriptions
-React components update UI instantly on new messages
+---
 
+## 📂 Project Structure
 
-🚀 Future Enhancements
-👥 Group chat functionality
-📎 Media/file sharing
-🔔 Push notifications
-🧠 AI-powered smart replies
-📱 Mobile app version
-🤝 Contributing
+```text
+src/
+├── components/     # Reusable UI components (Chat, Layout, UI primitives)
+├── data/           # Static data and constants
+├── hooks/          # Custom React hooks for logic and data fetching
+├── integrations/   # Third-party service integrations (Supabase)
+├── lib/            # Utility functions and third-party configurations
+├── pages/          # Main application views (Landing, Login, Signup, Chat)
+├── types/          # TypeScript interfaces and type definitions
+└── test/           # Test suites and configuration
+```
 
-Feel free to fork and contribute to the project.
+---
 
-📄 License
+## 🤝 Contributing
 
-MIT License
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-👩‍💻 Author
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Harshitha Yallamati
+---
 
-GitHub: https://github.com/Harshitha-Yallamati
-LinkedIn: https://linkedin.com/in/harshitha-yallamati
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+Built with ❤️ by [Harshitha Yallamati](https://github.com/Harshitha-Yallamati)
