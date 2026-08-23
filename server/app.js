@@ -48,8 +48,11 @@ const requireAuth = async (req, res, next) => {
 
   const { data, error } = await supabase.auth.getUser(token);
   if (error || !data.user) {
-    console.error("[AI] auth.getUser failed:", error?.message || "no user in response", error?.status);
-    return res.status(401).json({ error: "Invalid or expired authentication token." });
+    const reason = error?.message || "no user returned";
+    console.error("[AI] auth.getUser failed:", reason, error?.status);
+    return res.status(401).json({
+      error: `Invalid or expired authentication token. (${reason})`,
+    });
   }
 
   req.user = data.user;
