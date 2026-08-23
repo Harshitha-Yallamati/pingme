@@ -54,8 +54,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
 
-      // If we got a session/user, we are definitely no longer loading the AUTH state
-      if (currentSession || event === 'SIGNED_OUT') {
+      // INITIAL_SESSION means Supabase finished checking for an existing session
+      // (found or not), so auth state is resolved either way.
+      if (currentSession || event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') {
         initialized = true;
         setLoading(false);
       }
