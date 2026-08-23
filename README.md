@@ -19,6 +19,7 @@ A modern, high-performance real-time chat application built with **React**, **Vi
 -   **🎨 Premium UI**: Built with Shadcn UI and Tailwind CSS for a sleek, modern aesthetic.
 -   **🔔 Interactive Notifications**: Real-time toast notifications for new messages and status updates.
 -   **🌗 Dark Mode Support**: Easy on the eyes with native dark mode integration.
+-   **PingMe AI Assistant**: In-app AI panel for drafting replies, summarizing assistant chats, polishing messages, and quick suggestions.
 
 ---
 
@@ -68,15 +69,15 @@ A modern, high-performance real-time chat application built with **React**, **Vi
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   GEMINI_API_KEY=your_gemini_api_key
    ```
 
 ### Development
 
-Start the development server:
+Start the application and AI assistant API in two terminals:
 ```bash
 npm run dev
-# or
-bun dev
+npm run dev:ai
 ```
 The application will be available at `http://localhost:8080`.
 

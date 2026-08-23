@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, MoreVertical, MessageSquarePlus, Sun, Moon, LogOut, User as UserIcon, Archive, Settings } from "lucide-react";
+import { Search, MessageSquarePlus, Sun, Moon, LogOut, User as UserIcon, Archive, Settings, BotMessageSquare } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import ChatList from "./ChatList";
@@ -19,10 +19,12 @@ interface SidebarProps {
   chats: (Chat & { participantProfiles: User[] })[];
   activeChatId: string | null;
   onSelectChat: (chatId: string) => void;
+  isAIAssistantOpen: boolean;
+  onToggleAIAssistant: () => void;
 }
 
-const Sidebar = ({ chats, activeChatId, onSelectChat }: SidebarProps) => {
-  const { profile, user: authUser, loadingProfile, refreshProfile } = useAuth();
+const Sidebar = ({ chats, activeChatId, onSelectChat, isAIAssistantOpen, onToggleAIAssistant }: SidebarProps) => {
+  const { profile, user: authUser, refreshProfile } = useAuth();
   const [view, setView] = useState<"chats" | "archived" | "settings">("chats");
   const [searchQuery, setSearchQuery] = useState("");
   const [isNewChatOpen, setIsNewChatOpen] = useState(false);
@@ -38,8 +40,8 @@ const Sidebar = ({ chats, activeChatId, onSelectChat }: SidebarProps) => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       toast.success("Logged out successfully");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to logout");
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to logout");
     }
   };
 
@@ -59,8 +61,8 @@ const Sidebar = ({ chats, activeChatId, onSelectChat }: SidebarProps) => {
       if (error) throw error;
       await refreshProfile();
       toast.success("Profile updated successfully");
-    } catch (error: any) {
-      toast.error(error.message || "Failed to update profile");
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to update profile");
     } finally {
       setSaving(false);
     }
@@ -91,7 +93,7 @@ const Sidebar = ({ chats, activeChatId, onSelectChat }: SidebarProps) => {
     const query = searchQuery.toLowerCase();
 
     // Search in participant names
-    const hasMatchingParticipant = (chat as any).participantProfiles?.some((p: any) =>
+    const hasMatchingParticipant = chat.participantProfiles?.some((p) =>
       p.name?.toLowerCase().includes(query) ||
       p.username?.toLowerCase().includes(query)
     );
@@ -124,10 +126,29 @@ const Sidebar = ({ chats, activeChatId, onSelectChat }: SidebarProps) => {
 
         <div className="mt-auto flex flex-col items-center gap-4">
           <button
+            onClick={onToggleAIAssistant}
+            className={`p-3 rounded-2xl transition-all relative group ${
+              isAIAssistantOpen
+                ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            }`}
+            aria-label="Open PingMe AI assistant"
+          >
+            <BotMessageSquare className="h-6 w-6" />
+            <span className="absolute left-full ml-3 px-2 py-1 bg-popover text-popover-foreground text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-md border border-border">
+              PingMe AI
+            </span>
+          </button>
+
+          <button
             onClick={toggleTheme}
-            className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-2xl transition-all"
+            className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-2xl transition-all relative group"
+            aria-label="Toggle theme"
           >
             {theme === "dark" ? <Sun className="h-6 w-6" /> : <Moon className="h-6 w-6" />}
+            <span className="absolute left-full ml-3 px-2 py-1 bg-popover text-popover-foreground text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50 shadow-md border border-border">
+              Theme
+            </span>
           </button>
 
           <DropdownMenu>

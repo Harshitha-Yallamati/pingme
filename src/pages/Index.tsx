@@ -2,20 +2,26 @@ import { useState, useCallback } from "react";
 import Sidebar from "@/components/chat/ChatSidebar";
 import ChatWindow from "@/components/chat/ChatWindow";
 import EmptyChat from "@/components/chat/EmptyChat";
+import FloatingAIAssistant from "@/components/ai/FloatingAIAssistant";
 import { useChats, useMessages, useSendMessage } from "@/hooks/useChat";
 import { useAuth } from "@/hooks/useAuth";
+import { Chat, User } from "@/types/chat";
+
+type ChatWithParticipants = Chat & { participantProfiles: User[] };
 
 const Index = () => {
   const { user: authUser } = useAuth();
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
+  const [isAIAssistantOpen, setIsAIAssistantOpen] = useState(false);
 
   const { data: chats = [], isLoading: loadingChats } = useChats();
   const { data: messages = [], isLoading: loadingMessages } = useMessages(activeChatId);
   const sendMessageMutation = useSendMessage();
 
-  const activeChat = chats.find((c) => c.id === activeChatId);
+  const typedChats = chats as ChatWithParticipants[];
+  const activeChat = typedChats.find((c) => c.id === activeChatId);
   const otherUser = activeChat
-    ? (activeChat as any).participantProfiles.find((u: any) => u.id !== authUser?.id)
+    ? activeChat.participantProfiles.find((u) => u.id !== authUser?.id)
     : null;
 
   const handleSendMessage = useCallback(
@@ -46,7 +52,13 @@ const Index = () => {
     <div className="h-[100dvh] w-screen flex overflow-hidden bg-background">
       {/* Sidebar - hidden on mobile when chat is open */}
       <div className={`${activeChatId ? "hidden md:flex" : "flex"} w-full md:w-auto h-full`}>
-        <Sidebar chats={chats} activeChatId={activeChatId} onSelectChat={handleSelectChat} />
+        <Sidebar
+          chats={typedChats}
+          activeChatId={activeChatId}
+          onSelectChat={handleSelectChat}
+          isAIAssistantOpen={isAIAssistantOpen}
+          onToggleAIAssistant={() => setIsAIAssistantOpen((open) => !open)}
+        />
       </div>
 
       {/* Chat window or empty state */}
@@ -63,6 +75,7 @@ const Index = () => {
           <EmptyChat />
         )}
       </div>
+      <FloatingAIAssistant isOpen={isAIAssistantOpen} onOpenChange={setIsAIAssistantOpen} />
     </div>
   );
 };

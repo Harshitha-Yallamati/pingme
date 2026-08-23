@@ -131,4 +131,74 @@
     background-color: hsl(var(--muted-foreground) / 0.3);
     border-radius: 3px;
   }
+
+  .ai-markdown {
+    overflow-wrap: anywhere;
+  }
+
+  .ai-markdown p {
+    margin: 0;
+  }
+
+  .ai-markdown p + p,
+  .ai-markdown ul + p,
+  .ai-markdown ol + p,
+  .ai-markdown pre + p {
+    margin-top: 0.75rem;
+  }
+
+  .ai-markdown ul,
+  .ai-markdown ol {
+    margin: 0.25rem 0 0;
+    padding-left: 1.15rem;
+  }
+
+  .ai-markdown ul {
+    list-style: disc;
+  }
+
+  .ai-markdown ol {
+    list-style: decimal;
+  }
+
+  .ai-markdown li + li {
+    margin-top: 0.2rem;
+  }
+
+  .ai-markdown h1,
+  .ai-markdown h2,
+  .ai-markdown h3 {
+    margin: 0 0 0.45rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .ai-markdown code {
+    border-radius: 0.35rem;
+    background: rgb(39 39 42 / 0.85);
+    padding: 0.1rem 0.3rem;
+    color: rgb(167 243 208);
+    font-size: 0.82em;
+  }
+
+  .ai-markdown pre {
+    margin: 0.4rem 0 0;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    background: rgb(9 9 11 / 0.9);
+    padding: 0.75rem;
+  }
+
+  .ai-markdown pre code {
+    background: transparent;
+    padding: 0;
+    color: rgb(228 228 231);
+  }
+
+  .ai-markdown a {
+    color: rgb(110 231 183);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 }
