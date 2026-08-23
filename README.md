@@ -4,7 +4,6 @@ A modern, high-performance real-time chat application built with **React**, **Vi
 
 ![PingMe Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)
 ![Tech Stack](https://img.shields.io/badge/Stack-React%20%7C%20Supabase%20%7C%20Tailwind-blue?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
 
 ---
 
